@@ -133,3 +133,7 @@ dmypy.json
 
 # TUPA's models
 models/
+vocab/
+
+# Results directory
+images/
