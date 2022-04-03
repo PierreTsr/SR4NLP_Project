@@ -14,6 +14,7 @@ Then, a new python environment can be easily created by running the following co
 
 ```
 pipenv install
+python -m spacy download en_core_web_lg
 ```
 
 Once that's done, TUPA should be installed and ready to run, please look at the instruction on TUPA's repository to load and run some pre-trained models.
