@@ -41,7 +41,7 @@ for doc in fn.docs():
                 frame = dict()
                 start, end = annotation['Target'][0]
                 text = annotation.text[start:end + 1]
-                frame['target'] = pos2id(start, end, annotation.text)
+                frame['target'] = {annotation.frameName: pos2id(start, end, annotation.text)}
                 #((start, end, annotation.text[start:end + 1]))
                 frame_elements = []
                 for frame_element in annotation.FE[0]:
