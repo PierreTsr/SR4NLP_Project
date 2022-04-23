@@ -1,19 +1,21 @@
 import nltk
 import pickle
 import re
+from nltk.tokenize import WordPunctTokenizer
 
 nltk.download('framenet_v17')
 from nltk.corpus import framenet as fn
 
 def pos2id(start, end, text):
     idx = []
-    i = 1
-    for m in re.finditer(r'\S+', text):
-        index = i
-        s, e, item = m.start(), m.end(), m.group()
-        i += 1
+    index = 1
+    tokens = nltk.WordPunctTokenizer().tokenize(text)
+    positions = WordPunctTokenizer().span_tokenize(text)
+    for token, pos in zip(tokens, positions):
+        s, e = pos[0], pos[1]
         if s >= start and e <= end:
             idx.append(index)
+        index += 1
 
     return idx
 
@@ -25,6 +27,9 @@ for doc in fn.docs():
         if len(sentence.annotationSet) > 1:
             # There are associated frames
             frames = []
+            sentence_text = sentence.text
+            sentence_text = sentence_text.replace("'", "")
+            sentence_text = sentence_text.replace("’", "")
             skip = True  # skip first element (it's POS annotation)
             for annotation in sentence.annotationSet:
                 if skip:
