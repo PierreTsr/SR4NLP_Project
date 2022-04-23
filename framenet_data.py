@@ -27,9 +27,6 @@ for doc in fn.docs():
         if len(sentence.annotationSet) > 1:
             # There are associated frames
             frames = []
-            sentence_text = sentence.text
-            sentence_text = sentence_text.replace("'", "")
-            sentence_text = sentence_text.replace("’", "")
             skip = True  # skip first element (it's POS annotation)
             for annotation in sentence.annotationSet:
                 if skip:
