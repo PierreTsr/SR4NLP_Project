@@ -1,10 +1,10 @@
 import pickle
-
+from pathlib import Path
 import networkx as nx
 from ucca.convert import from_text
 from tupa.parse import Parser
 import warnings
-from graph_utils import passage2graph, find_scene, get_subtree, SceneNotFoundError
+from graph_utils import passage2graph, find_scene, get_subtree, SceneNotFoundError, plot_graph
 
 
 def sentence2graph(parser, sent):
@@ -14,9 +14,10 @@ def sentence2graph(parser, sent):
 
 def merge(frames, graph):
     for frame in frames:
-        verb_node = "0." + str(frame["target"][0])
+        frame_name = list(frame["target"].keys())[0]
+        verb_node = "0." + str(frame["target"][frame_name][0])
         try:
-            scene = get_subtree(graph, find_scene(graph, verb_node))
+            scene = get_subtree(graph, find_scene(graph, verb_node, new_tag=frame_name))
         except SceneNotFoundError as e:
             warnings.warn(str(e))
             continue
@@ -34,7 +35,7 @@ if __name__ == "__main__":
 
     parser = Parser("models/ucca-bilstm")
 
-    sentences = list(frame_net.keys())[:100]
+    sentences = list(frame_net.keys())[:10]
     text = "\n\n".join(sentences)
 
     with open("example.txt", "w") as file:
@@ -47,5 +48,10 @@ if __name__ == "__main__":
     for sent in sentences:
         merge(frame_net[sent], annotations[sent])
 
+    graph_path = Path("graphs/")
+    graph_path.mkdir(exist_ok=True)
+    image_path = Path("images/")
+    image_path.mkdir(exist_ok=True)
     for idx, (s, g) in enumerate(annotations.items()):
-        nx.write_gpickle(g, "graphs/graph_" + str(idx) + ".pkl")
+        nx.write_gpickle(g, graph_path / ("graph_" + str(idx) + ".pkl"))
+        plot_graph(g, image_path / ("graph_" + str(idx) + ".png"))
