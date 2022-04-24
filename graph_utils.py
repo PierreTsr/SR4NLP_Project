@@ -3,6 +3,10 @@ from networkx import DiGraph
 from ucca.core import Passage
 
 
+class SceneNotFoundError(Exception):
+    pass
+
+
 def passage2graph(passage: Passage):
     """
     Create a `networkx.DiGraph` from a parsed `ucca.core.Passage`.
@@ -113,10 +117,14 @@ def find_scene(graph: DiGraph, node: str):
     current_node = node
     try:
         in_edge = list(graph.in_edges(current_node, data=True))[0]
-        while in_edge[2]["tag"] not in ["P", "S"]:
+        while in_edge[2]["tag"] not in ["P", "S", "F"]:
             current_node = in_edge[0]
             in_edge = list(graph.in_edges(current_node, data=True))[0]
         current_node = in_edge[0]
         return current_node
     except IndexError:
-        raise RuntimeError("Cannot find a 'P' or 'S' edge from the given node.")
+        raise SceneNotFoundError("Cannot find a 'P' or 'S' or 'F' edge from the node: {} in sentence \n\"{}\"".format(
+            (node, get_text(graph, node)),
+            get_text(graph, "1.1"))
+        )
+

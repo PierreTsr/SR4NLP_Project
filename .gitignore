@@ -137,3 +137,5 @@ vocab/
 
 # Results directory
 images/
+graphs/
+ucca_files/
