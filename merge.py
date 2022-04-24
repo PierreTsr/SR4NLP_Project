@@ -1,7 +1,6 @@
 import pickle
 
 import networkx as nx
-from tqdm import tqdm
 from ucca.convert import from_text
 from tupa.parse import Parser
 import warnings
@@ -29,7 +28,7 @@ def merge(frames, graph):
     return graph
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     with open('annotated_sentences.pkl', 'rb') as f:
         frame_net = pickle.load(f)
 
@@ -50,7 +49,3 @@ if __name__=="__main__":
 
     for idx, (s, g) in enumerate(annotations.items()):
         nx.write_gpickle(g, "graphs/graph_" + str(idx) + ".pkl")
-
-
-
-
