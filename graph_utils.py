@@ -1,7 +1,9 @@
 import networkx as nx
+from matplotlib import pyplot as plt
 from networkx import DiGraph
 from ucca.core import Passage
-
+from networkx.drawing.nx_pydot import graphviz_layout
+from copy import copy
 
 class SceneNotFoundError(Exception):
     pass
@@ -100,7 +102,7 @@ def get_subtree(graph: DiGraph, node: str):
     return subtree
 
 
-def find_scene(graph: DiGraph, node: str):
+def find_scene(graph: DiGraph, node: str, new_tag=None):
     """
     Find the key of the scene where the provided node acts as a verb.
 
@@ -120,6 +122,8 @@ def find_scene(graph: DiGraph, node: str):
         while in_edge[2]["tag"] not in ["P", "S", "F"]:
             current_node = in_edge[0]
             in_edge = list(graph.in_edges(current_node, data=True))[0]
+        if new_tag is not None:
+            graph.edges[in_edge[0:2]]["tag"] += " + " + new_tag
         current_node = in_edge[0]
         return current_node
     except IndexError:
@@ -128,3 +132,37 @@ def find_scene(graph: DiGraph, node: str):
             get_text(graph, "1.1"))
         )
 
+
+def plot_graph(graph, filename):
+    sent = get_text(graph, "1.1")
+    layout, label_pos = compute_layout(graph)
+    width = len(sent) / 4
+    height = max(pos[1] for pos in layout.values()) * 2
+    fig, ax = plt.subplots(figsize=(width, height))
+    nx.draw(graph, layout, ax=ax)
+    nx.draw_networkx_edge_labels(graph, layout, nx.get_edge_attributes(graph, "tag"))
+    nx.draw_networkx_labels(graph, label_pos, nx.get_node_attributes(graph, "text"))
+    plt.savefig(filename)
+
+
+def compute_layout(graph):
+    terminals = get_children(graph, "1.1")
+    positions = {
+        node: (idx, 1) for idx, node in enumerate(terminals)
+    }
+    node_position(graph, positions, "1.1")
+    labels = copy(positions)
+    for node, pos in labels.items():
+        if node[0] == "0":
+            labels[node] = (pos[0], pos[1] - 0.5)
+    return positions, labels
+
+
+def node_position(graph, pos, node):
+    if node in pos.keys():
+        return pos[node]
+    children_pos = [node_position(graph, pos, n) for n in graph.neighbors(node)]
+    level = 1 + max(pos[1] for pos in children_pos)
+    x_pos = sum(pos[0] for pos in children_pos) / len(children_pos)
+    pos[node] = (x_pos, level)
+    return pos[node]
