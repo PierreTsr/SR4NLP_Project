@@ -23,9 +23,31 @@ def merge(frames, graph):
             continue
         for fe in frame["elements"]:
             for tag_fn, tokens_fn in fe.items():
+                edges_to_tag = set()
+                max_intersection = 0
                 for edge, (tag_ucca, tokens_ucca) in scene.items():
-                    if set(tokens_ucca) & set(tokens_fn):
-                        graph.edges[edge]["tag"] += " + " + tag_fn
+                    # ==== Set merging rules here ====
+
+                    # If tokens in common add tag
+                    # if set(tokens_ucca) & set(tokens_fn):
+                    #     edges_to_tag.add(edge)
+
+                    # If exact match stop (prevent issues with coreference)
+                    if set(tokens_ucca) == set(tokens_fn):
+                        edges_to_tag = {edge}
+                        break
+                    # Only tag the edge with the largest intersection
+                    if len(set(tokens_ucca).intersection(tokens_fn)) > max_intersection:
+                        max_intersection = len(set(tokens_ucca).intersection(tokens_fn))
+                        edges_to_tag = {edge}
+                    # If ex aequo, add them
+                    if len(set(tokens_ucca).intersection(tokens_fn)) == max_intersection:
+                        edges_to_tag.add(edge)
+
+                for edge in edges_to_tag:
+                    graph.edges[edge]["tag"] += " + " + tag_fn
+
+
     return graph
 
 
