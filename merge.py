@@ -28,11 +28,11 @@ def merge(frames, graph):
                 for edge, (tag_ucca, tokens_ucca) in scene.items():
                     # ==== Set merging rules here ====
 
-                    # If tokens in common add tag
+                    # If tokens in common => add tag
                     # if set(tokens_ucca) & set(tokens_fn):
                     #     edges_to_tag.add(edge)
 
-                    # If exact match stop (prevent issues with coreference)
+                    # If exact match => stop (prevent issues with coreference)
                     if set(tokens_ucca) == set(tokens_fn):
                         edges_to_tag = {edge}
                         break
@@ -40,7 +40,7 @@ def merge(frames, graph):
                     if len(set(tokens_ucca).intersection(tokens_fn)) > max_intersection:
                         max_intersection = len(set(tokens_ucca).intersection(tokens_fn))
                         edges_to_tag = {edge}
-                    # If ex aequo, add them
+                    # If ex aequo => add it
                     if len(set(tokens_ucca).intersection(tokens_fn)) == max_intersection:
                         edges_to_tag.add(edge)
 
@@ -57,6 +57,7 @@ if __name__ == "__main__":
 
     parser = Parser("models/ucca-bilstm")
 
+    # Choose your sentences here:
     sentences = list(frame_net.keys())[:10]
     text = "\n\n".join(sentences)
 
