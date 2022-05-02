@@ -41,7 +41,7 @@ def merge(frames, graph):
                         max_intersection = len(set(tokens_ucca).intersection(tokens_fn))
                         edges_to_tag = {edge}
                     # If ex aequo => add it
-                    if len(set(tokens_ucca).intersection(tokens_fn)) == max_intersection:
+                    if 0 < max_intersection == len(set(tokens_ucca).intersection(tokens_fn)):
                         edges_to_tag.add(edge)
 
                 for edge in edges_to_tag:
