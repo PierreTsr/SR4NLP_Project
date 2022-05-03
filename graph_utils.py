@@ -147,7 +147,7 @@ def plot_graph(graph, filename, ratio=2, scale=1):
     nx.draw_networkx_labels(graph, label_pos, nx.get_node_attributes(graph, "text"))
     ax.set_xlim((x_min, x_max))
     ax.set_ylim((y_min, y_max))
-    plt.tight_layout
+    plt.tight_layout()
     plt.savefig(filename)
 
 
