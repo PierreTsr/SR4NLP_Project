@@ -5,6 +5,7 @@ from ucca.core import Passage
 from networkx.drawing.nx_pydot import graphviz_layout
 from copy import copy
 
+
 class SceneNotFoundError(Exception):
     pass
 
@@ -133,15 +134,20 @@ def find_scene(graph: DiGraph, node: str, new_tag=None):
         )
 
 
-def plot_graph(graph, filename):
+def plot_graph(graph, filename, ratio=2, scale=1):
     sent = get_text(graph, "1.1")
     layout, label_pos = compute_layout(graph)
-    width = len(sent) / 4
-    height = max(pos[1] for pos in layout.values()) * 2
-    fig, ax = plt.subplots(figsize=(width, height))
+    x_min = -1
+    x_max = len(get_children(graph, "1.1")) + 1
+    y_min = 0
+    y_max = max(pos[1] for pos in layout.values()) + .5
+    fig, ax = plt.subplots(figsize=((x_max - x_min) * scale, (y_max - y_min) * ratio * scale))
     nx.draw(graph, layout, ax=ax)
     nx.draw_networkx_edge_labels(graph, layout, nx.get_edge_attributes(graph, "tag"))
     nx.draw_networkx_labels(graph, label_pos, nx.get_node_attributes(graph, "text"))
+    ax.set_xlim((x_min, x_max))
+    ax.set_ylim((y_min, y_max))
+    plt.tight_layout
     plt.savefig(filename)
 
 
