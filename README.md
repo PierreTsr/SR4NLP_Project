@@ -1,5 +1,5 @@
 # SR4NLP_Project
-FrameNet + UUCA = Project
+FrameNet + UCCA = Project
 
 
 ## Running TUPA
