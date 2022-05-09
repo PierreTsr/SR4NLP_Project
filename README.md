@@ -29,7 +29,7 @@ https://github.com/swabhs/open-sesame
 We included Open-SESAME with the intention that a user would be able to parse any sentence through TUPA and FrameNet and merge them together using our code into a graph structure. However, despite acheiving a theoretical state of the art score of 71% in the original study for Open-SESAME, we were only ever able to achieve ~40% accuracy which introduced an unacceptable level of errors into our experiment from the very beginning. Future work on successfully implementing Open-SESAME would greatly expand the capabilities of our project by removing the limitation on using pre-annotated FrameNet sentences. However, given the limited timeline of this project we regretfully had to move forward without it.
 
 ## NLTK
-NLTK is used to access the FrameNet elements through the built in FrameNet API. We 
+NLTK is used to access the FrameNet elements through the built in FrameNet API.
 
 ```
 pipenv install ntlk
