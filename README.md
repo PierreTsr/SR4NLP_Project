@@ -31,16 +31,16 @@ We included Open-SESAME with the intention that a user would be able to parse an
 ## NLTK
 NLTK is used to access the FrameNet elements through the built in FrameNet API. We 
 
-'''
+```
 pipenv install ntlk
-'''
+```
 
 ## NetworkX
 Used to build the graph representations and visualizations as well as traverse the graph structure for the merging operations.
 
-'''
+```
 pipenv install networkx
-'''
+```
 
 # Our Work - High Level Overview
 ![proposed_framework](https://github.com/PierreTsr/SR4NLP_Project/blob/main/srnlp_resized.png)
