@@ -38,7 +38,11 @@ pipenv install ntlk
 ## NetworkX
 Used to build the graph representations and visualizations as well as traverse the graph structure for the merging operations.
 
+'''
+pipenv install networkx
+'''
+
 # Our Work - High Level Overview
-![proposed_framework](https://github.com/PierreTsr/SR4NLP_Project/blob/main/srnlp.png)
+![proposed_framework](https://github.com/PierreTsr/SR4NLP_Project/blob/main/srnlp_resized.png)
 
 ### Insert the actual steps here as a high level overview (1 to 2 sentences per step)
