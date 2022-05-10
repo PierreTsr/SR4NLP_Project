@@ -1,6 +1,14 @@
 # SR4NLP_Project
 FrameNet + UCCA - Open-SESAME = Project
 
+# Motivation
+UCCA captures a rich set of semantic distinctions, with formal representations as directed edge labeled graphs. In the graphs, nodes represent semantic concepts such as entities and relations, and edges represent categories such as Participant (A), Process (P), Elaborator (E) and Center (C). Texts are viewed as collections of scenes describing some movement or action, with different scenes being linked, or occurring conditionally or in parallel of one another. 
+
+Frame semantics utilize frames, available in a resource called FrameNet, which describe the conceptual structure needed to understand a word. Frames describe the interactions among semantic roles, called frame elements, of which core and non-core types exist. Frames can be related to one another through inheritance and perspective. 
+
+Both annotations have dedicated parsers. However, while UCCA is able to reach a decent accuracy with (TUPA - 79% F1), frame semantics parsing remains a very difficult task up to this day (OpenSesame - 71% F1 “theoretically”). This prompted the comparison of annotations on the same sentences using both parsers.
+
+
 # Setup
 ## Running TUPA
 
