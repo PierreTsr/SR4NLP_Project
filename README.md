@@ -56,7 +56,7 @@ pipenv install networkx
 ## Workflow Steps
 1. Parse a sentence using TUPA to identify its UCCA annotation, focusing on Participant (A), Process (P), Elaborator (E) and Center (C). Visualize as a graph.
 2. Refer to the pre-annotated FrameNet annotations for the sentence's FrameNet annotation, focusing on the Target (predicate).
-3. Compare the UCCA and FrameNet annotations by focusing on the predicates of the sentence, typically labeled as P (Process) in UCCA annotations and Target in FrameNet annotations. These elements will be most helpful in successfully merging the annotations. 
+3. Compare the UCCA and FrameNet annotations by focusing on the predicates of the sentence, typically labeled as P (Process) or S (Scene) in UCCA annotations and Target in FrameNet annotations. These elements will be most helpful in successfully merging the annotations. 
 4. Using bottom-up graph search, align the UCCA P-edge with FrameNet Target to initiate the merge.
 5. Traverse the resulting graph top-down to identify the UCCA scene elements and their relations to FrameNet's frame elements. 
 6. Annotate the edges of this merged graph with the most probable frame element labels based on maximum token intersection.
