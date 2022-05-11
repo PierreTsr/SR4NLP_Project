@@ -2,17 +2,38 @@ import pickle
 from pathlib import Path
 import networkx as nx
 from ucca.convert import from_text
+from ucca.core import Passage
 from tupa.parse import Parser
 import warnings
 from graph_utils import passage2graph, find_scene, get_subtree, SceneNotFoundError, plot_graph
 
 
 def sentence2graph(parser, sent):
+    """
+    Convert a sentence to an annotated UCCA directed graph.
+
+    :param parser: TUPA parser.
+    :type parser: Parser
+    :param sent: sentence to process
+    :type sent: str
+    :return: parsed graph
+    :rtype: nx.DiGraph
+    """
     passage = list(parser.parse(from_text(sent)))[0][0]
     return passage2graph(passage)
 
 
 def merge(frames, graph):
+    """
+    Merge a set of Frame Net annotations and a UCCA graph (with networkx).
+
+    :param frames: dictionary of frames in the sentence
+    :type frames: list[dict[str,dict[str, list[int]]]
+    :param graph: a directed UCCA graph
+    :type graph: nx.DiGraph
+    :return: an augmented UCCA graph
+    :rtype: nx.DiGraph
+    """
     for frame in frames:
         frame_name = list(frame["target"].keys())[0]
         verb_node = "0." + str(frame["target"][frame_name][0])
@@ -32,7 +53,7 @@ def merge(frames, graph):
                     # if set(tokens_ucca) & set(tokens_fn):
                     #     edges_to_tag.add(edge)
 
-                    # If exact match => stop (prevent issues with coreference)
+                    # If exact match => stop (prevent issues with co-reference)
                     if set(tokens_ucca) == set(tokens_fn):
                         edges_to_tag = {edge}
                         break
@@ -52,9 +73,11 @@ def merge(frames, graph):
 
 
 if __name__ == "__main__":
+    # Load Frame Net annotations
     with open('annotated_sentences.pkl', 'rb') as f:
         frame_net = pickle.load(f)
 
+    # Load parser
     parser = Parser("models/ucca-bilstm")
 
     # Choose your sentences here:
@@ -64,13 +87,16 @@ if __name__ == "__main__":
     with open("example.txt", "w") as file:
         file.write(text)
 
+    # Initial UCCA parsing
     annotations = {}
     for sent, (passage,) in zip(sentences, parser.parse(from_text(text))):
         annotations[sent] = sentence2graph(parser, sent)
 
+    # Annotations merging
     for sent in sentences:
         merge(frame_net[sent], annotations[sent])
 
+    # Visualization
     graph_path = Path("graphs/")
     graph_path.mkdir(exist_ok=True)
     image_path = Path("images/")
